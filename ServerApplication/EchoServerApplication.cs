@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Connections;
@@ -21,7 +22,10 @@ namespace Bedrock.Framework
             try
             {
                 _logger.LogInformation("{ConnectionId} connected", connection.ConnectionId);
-
+                if (!Debugger.IsAttached)
+                {
+                    Debugger.Launch();
+                }
                 await connection.Transport.Input.CopyToAsync(connection.Transport.Output);
             }
             finally
